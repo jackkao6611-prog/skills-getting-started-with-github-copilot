@@ -1,0 +1,15 @@
+import copy
+import pytest
+
+from src import app as app_module
+
+
+def pytest_configure(config):
+    config.addinivalue_line("markers", "api: mark test as api test")
+
+
+@pytest.fixture(autouse=True)
+def reset_activities():
+    original_activities = copy.deepcopy(app_module.activities)
+    yield
+    app_module.activities = copy.deepcopy(original_activities)
